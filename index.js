@@ -5,14 +5,13 @@ var torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn
 $.get( "https://tv-v2.api-fetch.website/movies/1", ( data )=>
 {
     console.log(data)
-
-    for(i = 0; i < data.lenght; i++) 
+    for(i = 0; i < data.length; i++) 
     {
-        console.log(i)
+        console.log(data)
         $( "#movies" ).append(`
         <div class="col-md-4">
             <div class="card mb-4 shadow-sm">
-            <img onclick="loadMovie(${i})" src="${data[i].images.poster}" class="bd-placeholder-img card-img-top">
+            <img href="#" onclick="loadMovie(${i})" src="${data[i].images.poster}" class="bd-placeholder-img card-img-top">
             <div class="card-body">
                 <h5 class="card-title">${data[i].title}</h5>
                 <p class="card-text">${data[i].synopsis}</p>
