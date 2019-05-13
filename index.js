@@ -16,7 +16,7 @@ $.get( url + '/movies/' + page,  ( data )=>
                 <p class="card-text">${data[i].synopsis}</p>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                        <a onclick="loadMovie('${data[i]._id}')" type="button" class="btn btn-sm btn-outline-secondary">View</a>
+                        <a onclick="loadMovie('${data[i]._id}', '${data[i].images.poster}')" type="button" class="btn btn-sm btn-outline-secondary">View</a>
                         <a type="button" class="btn btn-sm btn-outline-secondary">Like</a>
                     </div>
                     <small class="text-muted">9 likes</small>
@@ -29,11 +29,11 @@ $.get( url + '/movies/' + page,  ( data )=>
   
 })
 
-function loadMovie(id)
+function loadMovie(imdbid, poster)
 {       
     $( "#frame" ).empty()
 
-    $.get( url + '/movie/' + id,  ( movie )=>{
+    $.get( url + '/movie/' + imdbid,  ( movie )=>{
         console.log(movie)
 
         //static
@@ -49,23 +49,43 @@ function loadMovie(id)
         //dynamics
         for (var lang in movie.torrents)
         {
-            $( "#frame" ).append(`${lang}: we<div class="btn-group">`)
+            $( "#frame" ).append(`${lang}: <div class="btn-group">`)
 
             if(typeof(movie.torrents[lang]) === 'object') 
             {
                 for (var p in movie.torrents[lang])
                 {
-                    $( "#frame" ).append(`<button onclick="play('${movie.torrents[lang][p].url}')" type="button" class="btn btn-sm btn-outline-secondary">${p}</button>`)
+                    $( "#frame" ).append
+                    (`
+                        <button 
+                            onclick="play('${movie.torrents[lang][p].url}', '${imdbid}', '${poster}')" 
+                            type="button" class="btn btn-sm btn-outline-secondary">
+                            ${p}
+                        </button>
+                    `)
                 }
             }            
 
             $( "#frame" ).append(`<div>`)
         }
+
+        
     })    
 }
 
-function play(id)
-{    
+function play(magnet, imdbid, poster)
+{   
+    //torrentstime
+    $( "#frame" ).append
+    (`
+        <br>
+        <br>
+        <script>torrentsTime.init({publisher_id:1})</script>
+        <div class="torrentsTime" data-setup='{"source": "${magnet}", "imdbid": "${imdbid}", "poster": "${poster}"}'></div>
+    `)   
+    
+    /*
+    //webtorrent way
     var torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent'
     //var torrentId = id
     console.log(torrentId)
@@ -82,7 +102,7 @@ function play(id)
     // Display the file by adding it to the DOM.
     // Supports video, audio, image files, and more!
     file.appendTo("#frame")
-    })
+    })*/
 }
 
 
