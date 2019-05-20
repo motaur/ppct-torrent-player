@@ -6,7 +6,7 @@ $.get( url + '/movies/' + page,  ( data )=>
 {
     console.log(data)
     for(i = 0; i < data.length; i++) 
-    {        
+    {
         $( "#movies" ).append(`
         <div class="col-md-4">
             <div class="card mb-4 shadow-sm">
@@ -23,14 +23,13 @@ $.get( url + '/movies/' + page,  ( data )=>
                 </div>
             </div>
             </div>
-        </div>      
+        </div>
         `)
     }
-  
 })
 
 function loadMovie(imdbid, poster)
-{       
+{
     $( "#frame" ).empty()
 
     $.get( url + '/movie/' + imdbid,  ( movie )=>{
@@ -41,9 +40,7 @@ function loadMovie(imdbid, poster)
         (`
             <h2>${movie.title}</h2>
             <p><i class="material-icons">date_range</i> ${movie.year} <i class="material-icons">access_time</i> ${movie.runtime} min <a href="${movie.trailer}">Trailer</a> </p>
-            <p>${movie.synopsis}</p>          
-            
-            
+            <p>${movie.synopsis}</p>           
         `)
 
         //dynamics
@@ -64,17 +61,16 @@ function loadMovie(imdbid, poster)
                         </button>
                     `)
                 }
-            }            
+            }
 
             $( "#frame" ).append(`<div>`)
         }
-
         
-    })    
+    })
 }
 
 function play(magnet, imdbid, poster)
-{   
+{
     //torrentstime
     $( "#frame" ).append
     (`
@@ -82,7 +78,9 @@ function play(magnet, imdbid, poster)
         <br>
         <script>torrentsTime.init({publisher_id:1})</script>
         <div class="torrentsTime" data-setup='{"source": "${magnet}"}'></div>
-    `)   
+    `)
+
+    //https://embed.torrents-time.com/#imdb=tt1254207&source=magnet:?xt=urn:btih:5D07A63238A6AF6D9EEDFA7739E382EFBAB280CF&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337
     //, "imdbid": "${imdbid}", "poster": "${poster}"}
     /*
     //webtorrent way
